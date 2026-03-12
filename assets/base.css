@@ -3595,6 +3595,3 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
-h2 {
-  color: yellow !important;
-}
