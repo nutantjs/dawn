@@ -114,6 +114,11 @@
                 assign total_active_values = total_active_values | plus: filter.active_values.size
                 assign presentation = filter.presentation | default: default_presentation
 
+                # Force swatch presentation for color filter
+                if filter.label == 'Color' or filter.label == 'Colour' or filter.label == 'Renk' or filter.param_name contains 'filter.v.option.color'
+                  assign presentation = 'swatch'
+                endif
+
                 if presentation == 'image'
                   assign show_more_number = 12
                   assign visual_layout_class = 'facets-layout facets-layout-grid facets-layout-grid--' | append: presentation
@@ -511,6 +516,10 @@
                 {%- for filter in results.filters -%}
                   {% liquid
                     assign presentation = filter.presentation | default: default_presentation
+                    # Force swatch presentation for color filter
+                    if filter.label == 'Color' or filter.label == 'Colour' or filter.label == 'Renk' or filter.param_name contains 'filter.v.option.color'
+                      assign presentation = 'swatch'
+                    endif
                     if presentation == 'image'
                       assign visual_layout_class = 'facets-layout facets-layout-grid facets-layout-grid--' | append: presentation
                     else

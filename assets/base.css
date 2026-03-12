@@ -3595,3 +3595,70 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* Facet color swatches - fill circles with color based on label */
+.facets .swatch {
+  border-width: 0.1rem;
+}
+
+.facets .swatch-input__label[title*='Black'] .swatch,
+.facets .swatch-input__label[title*='Siyah'] .swatch {
+  background-color: #000000;
+}
+
+.facets .swatch-input__label[title*='White'] .swatch,
+.facets .swatch-input__label[title*='Beyaz'] .swatch {
+  background-color: #ffffff;
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.facets .swatch-input__label[title*='Red'] .swatch,
+.facets .swatch-input__label[title*='Kırmızı'] .swatch {
+  background-color: #ff0000;
+}
+
+.facets .swatch-input__label[title*='Blue'] .swatch,
+.facets .swatch-input__label[title*='Mavi'] .swatch {
+  background-color: #0055ff;
+}
+
+.facets .swatch-input__label[title*='Green'] .swatch,
+.facets .swatch-input__label[title*='Yeşil'] .swatch {
+  background-color: #008a00;
+}
+
+.facets .swatch-input__label[title*='Yellow'] .swatch,
+.facets .swatch-input__label[title*='Sarı'] .swatch {
+  background-color: #ffd500;
+}
+
+.facets .swatch-input__label[title*='Brown'] .swatch,
+.facets .swatch-input__label[title*='Kahverengi'] .swatch {
+  background-color: #8b4513;
+}
+
+.facets .swatch-input__label[title*='Grey'] .swatch,
+.facets .swatch-input__label[title*='Gray'] .swatch,
+.facets .swatch-input__label[title*='Gri'] .swatch {
+  background-color: #888888;
+}
+
+.facets .swatch-input__label[title*='Pink'] .swatch,
+.facets .swatch-input__label[title*='Pembe'] .swatch {
+  background-color: #ff7ab8;
+}
+
+.facets .swatch-input__label[title*='Beige'] .swatch,
+.facets .swatch-input__label[title*='Bej'] .swatch {
+  background-color: #f3e2c6;
+}
+
+.facets .swatch-input__label[title*='Orange'] .swatch,
+.facets .swatch-input__label[title*='Turuncu'] .swatch {
+  background-color: #ff7a00;
+}
+
+.facets .swatch-input__label[title*='Purple'] .swatch,
+.facets .swatch-input__label[title*='Mor'] .swatch {
+  background-color: #7b3cff;
+}
