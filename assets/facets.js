@@ -3,12 +3,15 @@ class FacetFiltersForm extends HTMLElement {
     super();
     this.onActiveFilterClick = this.onActiveFilterClick.bind(this);
 
-    this.debouncedOnSubmit = debounce((event) => {
-      this.onSubmitHandler(event);
-    }, 800);
-
     const facetForm = this.querySelector('form');
-    facetForm.addEventListener('input', this.debouncedOnSubmit.bind(this));
+    facetForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      this.onSubmitHandler(event);
+      if (event.target.id === 'FacetFiltersFormMobile') {
+        const wrapper = document.querySelector('.mobile-facets__wrapper');
+        if (wrapper) wrapper.querySelector('summary').click();
+      }
+    });
 
     const facetWrapper = this.querySelector('#FacetsWrapperDesktop');
     if (facetWrapper) facetWrapper.addEventListener('keyup', onKeyUpEscape);
@@ -302,33 +305,73 @@ FacetFiltersForm.setListeners();
 class PriceRange extends HTMLElement {
   constructor() {
     super();
-    this.querySelectorAll('input').forEach((element) => {
-      element.addEventListener('change', this.onRangeChange.bind(this));
-      element.addEventListener('keydown', this.onKeyDown.bind(this));
-    });
-    this.setMinAndMaxValues();
+    const ranges = this.querySelectorAll('input[type="range"]');
+    if (ranges.length === 2) {
+      const minInput = this.querySelector('.price-range-bar__range--min');
+      const maxInput = this.querySelector('.price-range-bar__range--max');
+      minInput.addEventListener('input', this.onRangeInput.bind(this));
+      maxInput.addEventListener('input', this.onRangeInput.bind(this));
+      minInput.addEventListener('change', this.onRangeChange.bind(this));
+      maxInput.addEventListener('change', this.onRangeChange.bind(this));
+      this.updateConstraints();
+      this.updateLabels();
+    }
+  }
+
+  onRangeInput(event) {
+    this.updateConstraints();
+    this.updateLabels();
   }
 
   onRangeChange(event) {
     this.adjustToValidValues(event.currentTarget);
-    this.setMinAndMaxValues();
+    this.updateConstraints();
+    this.updateLabels();
   }
 
-  onKeyDown(event) {
-    if (event.metaKey) return;
+  updateConstraints() {
+    const minInput = this.querySelector('.price-range-bar__range--min');
+    const maxInput = this.querySelector('.price-range-bar__range--max');
+    if (!minInput || !maxInput) return;
+    const maxVal = maxInput.value;
+    const minVal = minInput.value;
+    minInput.setAttribute('data-max', maxVal);
+    maxInput.setAttribute('data-min', minVal);
+  }
 
-    const pattern = /[0-9]|\.|,|'| |Tab|Backspace|Enter|ArrowUp|ArrowDown|ArrowLeft|ArrowRight|Delete|Escape/;
-    if (!event.key.match(pattern)) event.preventDefault();
+  updateLabels() {
+    const container = this.querySelector('.price-range-bar');
+    if (!container) return;
+    const minInput = this.querySelector('.price-range-bar__range--min');
+    const maxInput = this.querySelector('.price-range-bar__range--max');
+    const minEl = container.querySelector('[data-value-min]');
+    const maxEl = container.querySelector('[data-value-max]');
+    const minHidden = this.querySelector('[data-price-min-hidden]');
+    const maxHidden = this.querySelector('[data-price-max-hidden]');
+    const symbol = container.getAttribute('data-currency-symbol') || '';
+    const minCents = minInput ? Number(minInput.value) : 0;
+    const maxCents = maxInput ? Number(maxInput.value) : 0;
+    const minFormatted = this.formatMoney(minCents, symbol);
+    const maxFormatted = this.formatMoney(maxCents, symbol);
+    if (minEl) minEl.textContent = minFormatted;
+    if (maxEl) maxEl.textContent = maxFormatted;
+    if (minHidden) minHidden.value = (minCents / 100).toFixed(2);
+    if (maxHidden) maxHidden.value = (maxCents / 100).toFixed(2);
+  }
+
+  formatMoney(cents, symbol) {
+    const value = (cents / 100).toFixed(2);
+    return symbol ? `${symbol}${value}` : value;
   }
 
   setMinAndMaxValues() {
-    const inputs = this.querySelectorAll('input');
-    const minInput = inputs[0];
-    const maxInput = inputs[1];
+    const minInput = this.querySelector('.price-range-bar__range--min');
+    const maxInput = this.querySelector('.price-range-bar__range--max');
+    if (!minInput || !maxInput) return;
     if (maxInput.value) minInput.setAttribute('data-max', maxInput.value);
     if (minInput.value) maxInput.setAttribute('data-min', minInput.value);
     if (minInput.value === '') maxInput.setAttribute('data-min', 0);
-    if (maxInput.value === '') minInput.setAttribute('data-max', maxInput.getAttribute('data-max'));
+    if (maxInput.value === '') minInput.setAttribute('data-max', minInput.getAttribute('data-max'));
   }
 
   adjustToValidValues(input) {
