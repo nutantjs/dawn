@@ -159,6 +159,8 @@
 .facets {
   display: block;
   grid-column-start: span 2;
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 700;
 }
 
 .facets__form {
@@ -166,6 +168,15 @@
   gap: 0 3.5rem;
   grid-template-columns: 1fr max-content max-content;
   margin-bottom: 0.5rem;
+}
+
+.mobile-facets {
+  font-family: 'Satoshi', sans-serif;
+  font-weight: 700;
+}
+
+.facets__apply {
+  font-weight: 500;
 }
 
 .facets__wrapper {
@@ -1425,6 +1436,7 @@ input.mobile-facets__checkbox {
     width: 100%;
     border-radius: 6.2rem;
     box-shadow: none;
+    font-weight: 500 !important;
   }
 
   .facets__apply::before,

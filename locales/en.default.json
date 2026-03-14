@@ -186,7 +186,7 @@
     },
     "facets": {
       "filter_and_operator_subtitle": "Match all",
-      "apply": "Apply",
+      "apply": "Apply Filter",
       "clear": "Clear",
       "clear_all": "Remove all",
       "from": "From",
